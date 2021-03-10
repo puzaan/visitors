@@ -42,138 +42,159 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left:10.0, top: 10.0),
+                        padding: EdgeInsets.only(left: 10.0, top: 10.0),
                         child: Row(
                           children: [
-                            Text('Name: ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
-                            Text(_visitList[position].visitorName, style: TextStyle(fontSize: 20)),
-
+                            Text(
+                              'Name: ',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            Text(_visitList[position].visitorName,
+                                style: TextStyle(fontSize: 20)),
                           ],
                         ),
                       ),
-
-                  SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Padding(
-                        padding: EdgeInsets.only(left:10.0),
+                        padding: EdgeInsets.only(left: 10.0),
                         child: Row(
                           children: [
-                            Text("Address: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
-                            Text(_visitList[position].address, style: TextStyle(fontSize: 20)),
-
+                            Text(
+                              "Address: ",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            Text(_visitList[position].address,
+                                style: TextStyle(fontSize: 20)),
                           ],
                         ),
                       ),
-
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.only(left:10.0),
-                    child: Row(
-                      children: [
-                        Text('Contact No: ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
-                        Text(_visitList[position].number, style: TextStyle(fontSize: 20)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.only(left:10.0),
-                    child: Row(
-                      children: [
-                        Text('Guest: ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
-                        _visitList[position].visitedStatus
-                            ? Text('Visited', style: TextStyle(fontSize: 20))
-                            : Text("Not Visited", style: TextStyle(fontSize: 20)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          icon: Icon(Icons.delete, size: 35, color: Colors.red,),
-                          onPressed: () async {
-                            await DB.delete(_visitList[position]);
-                            displayAllTable();
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.update),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Update Details'),
-                                    content: Column(
-                                      children: [
-                                        TextField(
-                                          //controller: _textEditingController,
-                                          decoration: InputDecoration(
-                                           //labelText: _visitList[position].visitorName,
-                                              hintText: "Add Name"),
-                                          onChanged: (value) {
-                                            _visitorList.visitorName = value;
-                                          },
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Contact No: ',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            Text(_visitList[position].number,
+                                style: TextStyle(fontSize: 20)),
+                            Icon(
+                              Icons.visibility,
+                              size: 30,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Guest: ',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            _visitList[position].visitedStatus
+                                ? Text('Visited',
+                                    style: TextStyle(fontSize: 20))
+                                : Text("Not Visited",
+                                    style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                size: 35,
+                                color: Colors.red,
+                              ),
+                              onPressed: () async {
+                                await DB.delete(_visitList[position]);
+                                displayAllTable();
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.update),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Update Details'),
+                                        content: Column(
+                                          children: [
+                                            TextField(
+                                              decoration: InputDecoration(
+                                                  hintText: "Add Name"),
+                                              onChanged: (value) {
+                                                _visitorList.visitorName =
+                                                    value;
+                                              },
+                                            ),
+                                            TextField(
+                                              decoration: InputDecoration(
+                                                  hintText: "Add Address"),
+                                              onChanged: (value) {
+                                                _visitorList.address = value;
+                                              },
+                                            ),
+                                            TextField(
+                                              decoration: InputDecoration(
+                                                  //labelText: _visitList[position].number,
+                                                  hintText: "Add Number"),
+                                              onChanged: (value) {
+                                                _visitorList.number = value;
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                        TextField(
-                                          //controller: _textEditingController,
-                                          decoration: InputDecoration(
-                                              //labelText: _visitList[position].address,
-                                              hintText: "Add Address"),
-                                          onChanged: (value) {
-                                            _visitorList.address = value;
-                                          },
-                                        ),
-                                        TextField(
-                                          // controller: _textEditingController,
-                                          decoration: InputDecoration(
-                                              //labelText: _visitList[position].number,
-                                              hintText: "Add Number"),
-                                          onChanged: (value) {
-                                            _visitorList.number = value;
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    actions: [
-                                      IconButton(
-                                          color: Colors.green,
-                                          icon: Icon(Icons.check),
-                                          onPressed: () {
-                                            VisitorList vistorsList =
-                                                VisitorList(
-                                                    id: _visitList[position].id,
-                                                    visitorName: _visitorList
-                                                        .visitorName,
-                                                    address:
-                                                        _visitorList.address,
-                                                    number: _visitorList.number,
-                                                    visitedStatus: true);
-                                            updateDatabase(vistorsList);
+                                        actions: [
+                                          IconButton(
+                                              color: Colors.green,
+                                              icon: Icon(Icons.check),
+                                              onPressed: () {
+                                                VisitorList vistorsList =
+                                                    VisitorList(
+                                                        id: _visitList[position]
+                                                            .id,
+                                                        visitorName:
+                                                            _visitorList
+                                                                .visitorName,
+                                                        address: _visitorList
+                                                            .address,
+                                                        number:
+                                                            _visitorList.number,
+                                                        visitedStatus: true);
+                                                updateDatabase(vistorsList);
 
-                                            // saveToDataBase(_visitorList.visitorName,
-                                            //     _visitorList.address, _visitorList.number);
-
-                                            _textEditingController.clear();
-                                            Navigator.pop(context);
-                                          }),
-                                      IconButton(
-                                          color: Colors.red,
-                                          icon: Icon(Icons.close),
-                                          onPressed: () {
-                                            _textEditingController.clear();
-                                            Navigator.pop(context);
-                                          }),
-                                    ],
-                                  );
-                                });
-                          }),
-                    ],
-                  )
-                ]),
+                                                _textEditingController.clear();
+                                                Navigator.pop(context);
+                                              }),
+                                          IconButton(
+                                              color: Colors.red,
+                                              icon: Icon(Icons.close),
+                                              onPressed: () {
+                                                _textEditingController.clear();
+                                                Navigator.pop(context);
+                                              }),
+                                        ],
+                                      );
+                                    });
+                              }),
+                        ],
+                      )
+                    ]),
               ),
             );
           }),
@@ -188,21 +209,18 @@ class _HomePageState extends State<HomePage> {
                     content: Column(
                       children: [
                         TextField(
-                          //controller: _textEditingController,
                           decoration: InputDecoration(hintText: "Add Name"),
                           onChanged: (value) {
                             _visitorList.visitorName = value;
                           },
                         ),
                         TextField(
-                          //controller: _textEditingController,
                           decoration: InputDecoration(hintText: "Add Address"),
                           onChanged: (value) {
                             _visitorList.address = value;
                           },
                         ),
                         TextField(
-                          // controller: _textEditingController,
                           decoration: InputDecoration(hintText: "Add Number"),
                           onChanged: (value) {
                             _visitorList.number = value;
@@ -255,4 +273,6 @@ class _HomePageState extends State<HomePage> {
     await DB.update(visitorList);
     displayAllTable();
   }
+
+  hideContact() {}
 }

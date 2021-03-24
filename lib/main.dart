@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/sqflite_database/sqflite_database.dart';
-import 'package:visitors/ui/home_page.dart';
 import 'package:visitors/ui/splash_screen.dart';
 
 void main() async{

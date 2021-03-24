@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:visitors/const/const.dart';
 import 'package:visitors/model/visitor_list.dart';
 import 'package:visitors/sqflite_database/sqflite_database.dart';
+import 'package:visitors/widget/textfeild.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Visitors List'),
+        title: Text(kTitle),
       ),
       body: ListView.builder(
           itemCount: _visitList.length,
@@ -49,12 +51,11 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             Text(
-                              'Name: ',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              '$kName: ',
+                              style: kHeadingText,
                             ),
                             Text(_visitList[position].visitorName,
-                                style: TextStyle(fontSize: 20)),
+                                style: kBodyText),
                           ],
                         ),
                       ),
@@ -64,12 +65,11 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             Text(
-                              "Address: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              "$kAddress: ",
+                              style: kHeadingText,
                             ),
                             Text(_visitList[position].address,
-                                style: TextStyle(fontSize: 20)),
+                                style: kBodyText),
                           ],
                         ),
                       ),
@@ -79,12 +79,10 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             Text(
-                              'Contact No: ',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              '$kContact: ',
+                              style: kHeadingText,
                             ),
-                            Text(_visitList[position].number,
-                                style: TextStyle(fontSize: 20)),
+                            Text(_visitList[position].number, style: kBodyText),
                             Icon(
                               Icons.visibility,
                               size: 30,
@@ -98,15 +96,12 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             Text(
-                              'Guest: ',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              '$kGuest: ',
+                              style: kHeadingText,
                             ),
                             _visitList[position].visitedStatus
-                                ? Text('Visited',
-                                    style: TextStyle(fontSize: 20))
-                                : Text("Not Visited",
-                                    style: TextStyle(fontSize: 20)),
+                                ? Text(kVisited, style: kBodyText)
+                                : Text(kNtVisited, style: kBodyText),
                           ],
                         ),
                       ),
@@ -130,65 +125,67 @@ class _HomePageState extends State<HomePage> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Update Details'),
-                                        content: Column(
-                                          children: [
-                                            TextField(
-                                              decoration: InputDecoration(
-                                                  hintText: "Add Name"),
-                                              onChanged: (value) {
-                                                _visitorList.visitorName =
-                                                    value;
-                                              },
-                                            ),
-                                            TextField(
-                                              decoration: InputDecoration(
-                                                  hintText: "Add Address"),
-                                              onChanged: (value) {
-                                                _visitorList.address = value;
-                                              },
-                                            ),
-                                            TextField(
-                                              decoration: InputDecoration(
-                                                  //labelText: _visitList[position].number,
-                                                  hintText: "Add Number"),
-                                              onChanged: (value) {
-                                                _visitorList.number = value;
-                                              },
-                                            ),
+                                      return SingleChildScrollView(
+                                        child: AlertDialog(
+                                          title: Text(kUpdate),
+                                          content: Column(
+                                            children: [
+                                              TextFeilds(
+                                                hint: kName,
+                                                onChange: (value) {
+                                                  _visitorList.visitorName =
+                                                      value;
+                                                },
+                                              ),
+                                              TextFeilds(
+                                                hint: kAddress,
+                                                onChange: (value) {
+                                                  _visitorList.address = value;
+                                                },
+                                              ),
+                                              TextFeilds(
+                                                hint: kContact,
+                                                onChange: (value) {
+                                                  _visitorList.number = value;
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            IconButton(
+                                                color: Colors.green,
+                                                icon: Icon(Icons.check),
+                                                onPressed: () {
+                                                  VisitorList vistorsList =
+                                                      VisitorList(
+                                                          id:
+                                                              _visitList[
+                                                                      position]
+                                                                  .id,
+                                                          visitorName:
+                                                              _visitorList
+                                                                  .visitorName,
+                                                          address: _visitorList
+                                                              .address,
+                                                          number: _visitorList
+                                                              .number,
+                                                          visitedStatus: true);
+                                                  updateDatabase(vistorsList);
+
+                                                  _textEditingController
+                                                      .clear();
+                                                  Navigator.pop(context);
+                                                }),
+                                            IconButton(
+                                                color: Colors.red,
+                                                icon: Icon(Icons.close),
+                                                onPressed: () {
+                                                  _textEditingController
+                                                      .clear();
+                                                  Navigator.pop(context);
+                                                }),
                                           ],
                                         ),
-                                        actions: [
-                                          IconButton(
-                                              color: Colors.green,
-                                              icon: Icon(Icons.check),
-                                              onPressed: () {
-                                                VisitorList vistorsList =
-                                                    VisitorList(
-                                                        id: _visitList[position]
-                                                            .id,
-                                                        visitorName:
-                                                            _visitorList
-                                                                .visitorName,
-                                                        address: _visitorList
-                                                            .address,
-                                                        number:
-                                                            _visitorList.number,
-                                                        visitedStatus: true);
-                                                updateDatabase(vistorsList);
-
-                                                _textEditingController.clear();
-                                                Navigator.pop(context);
-                                              }),
-                                          IconButton(
-                                              color: Colors.red,
-                                              icon: Icon(Icons.close),
-                                              onPressed: () {
-                                                _textEditingController.clear();
-                                                Navigator.pop(context);
-                                              }),
-                                        ],
                                       );
                                     });
                               }),
@@ -204,49 +201,51 @@ class _HomePageState extends State<HomePage> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('add Details'),
-                    content: Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(hintText: "Add Name"),
-                          onChanged: (value) {
-                            _visitorList.visitorName = value;
-                          },
-                        ),
-                        TextField(
-                          decoration: InputDecoration(hintText: "Add Address"),
-                          onChanged: (value) {
-                            _visitorList.address = value;
-                          },
-                        ),
-                        TextField(
-                          decoration: InputDecoration(hintText: "Add Number"),
-                          onChanged: (value) {
-                            _visitorList.number = value;
-                          },
-                        ),
+                  return SingleChildScrollView(
+                    child: AlertDialog(
+                      title: Text(kAdd),
+                      content: Column(
+                        children: [
+                          TextFeilds(
+                            hint: kName,
+                            onChange: (value) {
+                              _visitorList.visitorName = value;
+                            },
+                          ),
+                          TextFeilds(
+                            hint: kAddress,
+                            onChange: (value) {
+                              _visitorList.address = value;
+                            },
+                          ),
+                          TextFeilds(
+                            hint: kContact,
+                            onChange: (value) {
+                              _visitorList.number = value;
+                            },
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        IconButton(
+                            color: Colors.green,
+                            icon: Icon(Icons.check),
+                            onPressed: () {
+                              saveToDataBase(_visitorList.visitorName,
+                                  _visitorList.address, _visitorList.number);
+
+                              _textEditingController.clear();
+                              Navigator.pop(context);
+                            }),
+                        IconButton(
+                            color: Colors.red,
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              _textEditingController.clear();
+                              Navigator.pop(context);
+                            }),
                       ],
                     ),
-                    actions: [
-                      IconButton(
-                          color: Colors.green,
-                          icon: Icon(Icons.check),
-                          onPressed: () {
-                            saveToDataBase(_visitorList.visitorName,
-                                _visitorList.address, _visitorList.number);
-
-                            _textEditingController.clear();
-                            Navigator.pop(context);
-                          }),
-                      IconButton(
-                          color: Colors.red,
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            _textEditingController.clear();
-                            Navigator.pop(context);
-                          }),
-                    ],
                   );
                 });
           },

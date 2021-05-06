@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:visitors/model/visitor_list.dart';
+import 'package:visitors/provider/visitor_list.dart';
 import 'package:visitors/sqflite_database/sqflite_database.dart';
+import 'package:visitors/ui/home_page.dart';
 import 'package:visitors/ui/splash_screen.dart';
 
 void main() async{
@@ -17,7 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: SplashScreen(),
+      home: ChangeNotifierProvider<ProviderVisitorLists>(
+        create: (_) =>ProviderVisitorLists(),
+          child: HomePage()),
     );
   }
 }
